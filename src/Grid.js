@@ -52,7 +52,11 @@ export default class Grid {
       const $item = $(this);
       const height = $item.data('height') || $item.height();
       const width = $item.data('width') || $item.width();
-      const nonContentWidth = $item.outerWidth(true) - width;
+
+      // Need to measure actual DOM here always to determine true
+      // padding, border, and margin.
+      const nonContentWidth = $item.outerWidth(true) - $item.width();
+
       const flexWidth = $item.data('flex-grow');
       const flexHeight = Math.round(flexWidth * height / width);
 
