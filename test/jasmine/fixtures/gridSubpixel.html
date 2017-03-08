@@ -1,0 +1,60 @@
+<div class="window js-window">
+    <div class="project js-project">
+        <div class="grid js-grid-main">
+            <div class="grid-item js-grid-item-container" style="width:333.3px; flex-grow:333.3" data-width="500" data-height="330" data-flex-grow="333.3">
+                <span style="padding-bottom:66%"></span>
+                <span class="grid-item-fill"></span>
+                <img>
+            </div>
+            <div class="grid-item js-grid-item-container" style="width:333.3px; flex-grow:333.3" data-width="500" data-height="330" data-flex-grow="333.3">
+                <span style="padding-bottom:66%"></span>
+                <span class="grid-item-fill"></span>
+                <img>
+            </div>
+            <div class="grid-item js-grid-item-container" style="width:333.3px; flex-grow:333.3" data-width="500" data-height="330" data-flex-grow="333.3">
+                <span style="padding-bottom:66%"></span>
+                <span class="grid-item-fill"></span>
+                <img>
+            </div>
+            <div class="js-grid-spacer"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+  * {
+    border-radius: 3px;
+    box-sizing: border-box;
+  }
+
+  .project {
+    background: lavender;
+  }
+
+  .grid {
+    width: 1003.7px;
+    padding: 1px;
+    border: 1px solid black;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .grid-item {
+    display: inline-block;
+    position: relative;
+  }
+
+  .grid-item-fill {
+    background: rebeccapurple;
+    border: 1px solid white;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .grid-item span {
+    display: block;
+  }
+</style>

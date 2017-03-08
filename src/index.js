@@ -3,7 +3,7 @@ import Grid from './Grid';
 
 export default class Controller {
   constructor(config) {
-    this.grids = $(config.context).find(config.gridSelector).toArray().map((el, index) => new Grid($(el), index, config));
+    this.grids = $(config.context).find(config.gridSelector).toArray().map(el => new Grid($(el), config));
   }
 
   // TODO: Needs tests

@@ -1,9 +1,10 @@
 import $ from 'jquery';
+let uuid = 0;
 
 export default class Grid {
-  constructor($grid, index, { window, maxRatio, breakpoints }) {
+  constructor($grid, { window, maxRatio, breakpoints }) {
     this._$grid = $grid;
-    this._index = index;
+    this._eventNS = `.flexbox-sizer-${uuid++}`;
     this._$window = $(window);
     this._maxRatio = maxRatio;
     this._breakpoints = breakpoints;
@@ -18,13 +19,13 @@ export default class Grid {
   }
 
   destroy() {
-    this._$window.off('refresh-grids.grid-' + this._index);
-    this._$window.off('.grid-' + this._index);
+    this._$window.off(this._eventNS);
   }
 
   _bind() {
-    this._$window.on('refresh-grids.grid-' + this._index, () => this.refresh());
-    this._$window.on('resize.grid-' + this._index, () => this._autoSizeGrid());
+    this._$window.on('refresh-grids' + this._eventNS, () => this.refresh());
+    this._$window.on('resize' + this._eventNS, () => this._autoSizeGrid());
+    this._$window.on('orientationchange' + this._eventNS, () => this._autoSizeGrid());
   }
 
   _getBreakpointModifier(gridWidth) {
@@ -35,8 +36,17 @@ export default class Grid {
     return modifier;
   }
 
+  _getCssFloat($elem, prop) {
+    return parseFloat(window.getComputedStyle($elem[0])[prop]);
+  }
+
   _autoSizeGrid() {
-    const gridWidth = this._$grid.width();
+    const boxSizing = this._$grid.css('boxSizing');
+    const border = this._getCssFloat(this._$grid, 'border-left-width') * 2;
+    const padding = this._getCssFloat(this._$grid, 'padding-left') * 2;
+    const width = this._getCssFloat(this._$grid, 'width');
+
+    const gridWidth = boxSizing !== 'border-box' ? width : width - border - padding;
 
     this._recalcWidths(this._$grid, gridWidth);
   }
@@ -103,7 +113,7 @@ export default class Grid {
     // ultimately creating a last row of average height.
     let flexModifier = 1;
     let flexGrowth = 0;
-    let last = 2;
+    let last = Infinity;
     let averageRowHeight = 1;
     let direction = -1;
     let rest;
@@ -204,7 +214,8 @@ export default class Grid {
     });
   }
 
-  _toggleGridSpacer($grid, spacer) {
-    $grid.find('.js-grid-spacer').toggleClass('grid__item-spacer', spacer);
+  _toggleGridSpacer($grid, shouldShow) {
+    const display = shouldShow ? 'block' : 'none';
+    $grid.find('.js-grid-spacer').toggleClass('grid__item-spacer', shouldShow).css({ display });
   }
 }
